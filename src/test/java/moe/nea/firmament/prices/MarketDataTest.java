@@ -13,6 +13,11 @@ class MarketDataTest {
         assertEquals(Map.of("SHEEP;4",123.0), MarketData.prices(JsonParser.parseString("{'SHEEP;4':123}")));
         assertThrows(IllegalArgumentException.class, () -> MarketData.prices(JsonParser.parseString("{STONE:-1}")));
     }
+    @Test void findsCurrentNeuEnchantmentsAfterLoreHeader() {
+        var data = new Metadata();
+        data.addItem("SHARPNESS;7",JsonParser.parseString("{displayname:'§5Enchanted Book',lore:['§8Combinable in Anvil','','§9Sharpness VII','§7Increases melee damage']}").getAsJsonObject());
+        assertEquals("SHARPNESS;7",data.find("Sharpness VII",true));
+    }
     @Test void loadsNeuStockAliasesAndEnchantmentNames() {
         var data = new Metadata();
         data.addStocks(JsonParser.parseString("[{id:'SHARPNESS;7',stock:'ENCHANTMENT_SHARPNESS_7'}]"));

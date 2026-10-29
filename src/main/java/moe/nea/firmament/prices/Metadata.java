@@ -34,6 +34,12 @@ public final class Metadata {
         names.putIfAbsent(PriceLogic.clean(display), id);
         if (display.contains("Enchanted Book") && item.has("lore") && !item.getAsJsonArray("lore").isEmpty()) {
             String enchant = PriceLogic.clean(item.getAsJsonArray("lore").get(0).getAsString());
+            // Current NEU books put an anvil hint before the enchantment name.
+            // Keep compatibility with the older layout, where the name was first.
+            for (var line : item.getAsJsonArray("lore")) {
+                String candidate = PriceLogic.clean(line.getAsString());
+                if (candidate.matches(".+ (?:[IVXLCDM]+|[0-9]+)")) { enchant = candidate; break; }
+            }
             names.putIfAbsent(enchant, id);
             if (display.endsWith("Enchanted Book")) books.put(enchant, id);
         }
