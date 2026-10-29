@@ -9,6 +9,7 @@ import com.mojang.serialization.JsonOps;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.loader.api.FabricLoader;
@@ -30,25 +31,37 @@ import static net.fabricmc.fabric.api.client.command.v2.ClientCommands.literal;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommands.argument;
 
 public final class FirmamentPrices implements ClientModInitializer {
+    private static FirmamentPrices instance;
     private PriceSettings settings;
+    private boolean pendingConfig;
+    private KeyMapping openConfig;
+    public static FirmamentPrices instance() {return instance;}
+    public Screen configScreen(Screen parent) {return new PriceMenu(settings,this::applySettings).screen(parent);}
+    private void applySettings(PriceSettings updated) {
+        var endpoints=updated.apis.snapshot();settings=updated;settings.save(settingsPath);prices.configure(endpoints);
+    }
     private Path settingsPath;
     private PriceRepository prices;
     private KeyMapping showPrices;
     private KeyMapping stackPrices;
 
     @Override public void onInitializeClient() {
+        instance=this;
         var loader = FabricLoader.getInstance();
         settingsPath = loader.getConfigDir().resolve("firmament-prices.json");
         settings = PriceSettings.load(settingsPath);
         prices = new PriceRepository(loader.getGameDir().resolve("firmament-prices/metadata.json"));
+        prices.configure(settings.apis.snapshot());
+        openConfig=KeyMappingHelper.registerKeyMapping(new KeyMapping("key.firmament_prices.config",InputConstants.Type.KEYSYM,GLFW.GLFW_KEY_UNKNOWN,KeyMapping.Category.MISC));
+        ClientTickEvents.END_CLIENT_TICK.register(client->{
+            if(pendingConfig||openConfig.consumeClick()){pendingConfig=false;client.gui.setScreen(configScreen(client.gui.screen()));}
+        });
         showPrices = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.firmament_prices.show", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, KeyMapping.Category.MISC));
         stackPrices = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.firmament_prices.stack", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_SHIFT, KeyMapping.Category.MISC));
         ItemTooltipCallback.EVENT.register((stack, context, flags, lines) -> tooltip(stack, lines));
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, context) -> {
             var root = literal("firmamentprices").executes(command -> {
-                command.getSource().sendFeedback(Component.literal("Firmament Prices: enabled=" + settings.enabled
-                    + ", Bazaar=" + (settings.instantPrices ? "instant" : "orders") + ", BIN average=" + settings.averageDays
-                    + " days. Options: enabled <true|false>, bazaar <orders|instant>, average <off|1|3|7>. Key bindings are in Controls."));
+                pendingConfig=true;
                 return 1;
             });
             root.then(literal("enabled").then(argument("value", BoolArgumentType.bool()).executes(command -> {
@@ -74,12 +87,12 @@ public final class FirmamentPrices implements ClientModInitializer {
         String id = identify(stack);
         if (id == null) return;
         long count = PriceLogic.logicalCount(lore(stack), stack.getCount());
-        boolean wholeStack = pressed(stackPrices);
-        var result = PriceLogic.lines(prices.bazaar(id), prices.auction(id, 0),
-            settings.averageDays == 0 ? null : prices.auction(id, settings.averageDays), settings.instantPrices, wholeStack ? count : 1);
+        boolean wholeStack = settings.stackPrices && pressed(stackPrices);
+        var result = PriceLogic.visibleLines(prices.bazaar(id), prices.auction(id, 0),
+            settings.averageDays == 0 ? null : prices.auction(id, settings.averageDays), settings, wholeStack ? count : 1);
         if (result.isEmpty()) return;
         lines.add(Component.empty());
-        if (count > 1) lines.add((wholeStack
+        if (settings.stackPrices && count > 1 && (wholeStack || settings.stackHint)) lines.add((wholeStack
             ? Component.literal("Showing prices for x" + count)
             : Component.literal("[").append(stackPrices.getTranslatedKeyMessage()).append("] to show x" + count))
             .withStyle(ChatFormatting.DARK_GRAY));

@@ -33,6 +33,23 @@ public final class PriceLogic {
         return lines;
     }
 
+    public static List<Line> visibleLines(Bazaar bazaar, Double bin, Double average, PriceSettings settings, long multiplier) {
+        if(!settings.enabled) return List.of();
+        var candidates=new ArrayList<Line>();
+        if(bazaar!=null) candidates.addAll(lines(bazaar,bin,average,settings.instantPrices,multiplier));
+        else {
+            if(bin!=null)candidates.add(new Line("Lowest BIN",bin*multiplier));
+            if(average!=null)candidates.add(new Line("AVG Lowest BIN",average*multiplier));
+        }
+        return candidates.stream().filter(line -> switch(line.label()) {
+            case "Lowest BIN" -> settings.showLowestBin;
+            case "AVG Lowest BIN" -> settings.showAverageBin && settings.averageDays!=0;
+            case "Bazaar Buy Order", "Bazaar Instant Buy" -> settings.showBazaarBuy;
+            case "Bazaar Sell Order", "Bazaar Instant Sell" -> settings.showBazaarSell;
+            default -> false;
+        }).toList();
+    }
+
     public static String format(double price) {
         long integer = (long) price;
         int decimal = (int) (10 * Math.abs(price - integer));
