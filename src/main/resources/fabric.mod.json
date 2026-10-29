@@ -3,9 +3,9 @@
   "id": "firmament_prices",
   "version": "${version}",
   "name": "Firmament Prices",
-  "description": "Standalone Firmament Lowest BIN and Bazaar price tooltips for Hypixel SkyBlock.",
+  "description": "Standalone Lowest BIN and Bazaar price tooltips for Hypixel SkyBlock. Forked from Firmament.",
   "authors": [
-    "RaidBTW, forked from Firmament"
+    "RaidBTW"
   ],
   "contact": {
     "sources": "https://github.com/dfgdrfgh/temp",
