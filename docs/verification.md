@@ -1,7 +1,7 @@
 # Verification
 
 - Built against Minecraft 26.2, Fabric Loader 0.19.3, Fabric API 0.161.0+26.2, Java 25.
-- 20 unit/regression tests pass: Bazaar direction/priority, BIN averages, formatting, logical counts, special IDs, NEU stock/name parsing, zip parsing and scancode resolution.
+- 22 unit/regression tests pass: Bazaar direction/priority, BIN averages, formatting, logical counts, special IDs, NEU stock/name parsing, zip parsing and scancode resolution.
 - Parsed live Hypixel Bazaar (2,201 products) and EliteSkyblock Lowest BIN (4,898 IDs) responses; parsed the current NEU zip and verified enchanted-book names and stock aliases. Counts are a snapshot, not constants.
 - Started the 26.2 development client under Xvfb/Mesa, loaded the standalone mod, rendered its resources, and reached the client-started callback with metadata ready. Stopped deliberately after the smoke-check timeout. External sound/language assets were skipped, and this environment has no audio device or authenticated Minecraft session; this was a startup smoke check, not a complete play test.
 - The local environment blocks Unix domain sockets, so its cached Loom platform probe was adapted to return unsupported. That tooling-only adaptation is outside the repository and jar. GitHub Actions builds with unmodified Loom and uploads only the default mod jar.
@@ -16,3 +16,11 @@ The current NEU book layout includes an anvil hint before the enchantment name. 
 - Launched the actual shaded `FirmamentPrices-1.1.0+26.2.jar` from a fresh game directory with only Fabric API and a temporary smoke-test mod. Kotlin was loaded from the mod's nested jar, without a separate Kotlin installation.
 - The smoke test opened the MoulConfig screen, let it render, changed a price toggle, closed the menu and asserted that the save callback ran exactly once with the edited value. Result: `CONFIG_MENU_SMOKE_OK rendered configuration and saved toggle on close`.
 - API URL changes and reset use the same persisted configuration. Custom services must preserve the documented response formats.
+
+## Separate author summary and credits
+
+- Mod metadata Authors: `Firmament`, `RaidBTW`. Only the word "contributors" was removed from the original Firmament author entry.
+- The selected-mod header reads exactly `By RaidBTW, forked from Firmament`. A client-only optional Mod Menu redirect changes that header's author lookup for `firmament_prices` alone; the real metadata and Credits list stay separate.
+- Updated the compile-only Mod Menu API to the Minecraft 26.2 release, 20.0.3.
+- A packaged-client test with Mod Menu 20.0.3 opened and rendered its screen, verified the exact header and `Credits={Author=[Firmament, RaidBTW]}`, and checked that another mod's author list was unchanged. The transformed render method was checked to call the redirect.
+- A second packaged-client test without Mod Menu loaded the mod, opened its config screen, rendered it and saved a toggle successfully.

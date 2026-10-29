@@ -3,8 +3,9 @@
   "id": "firmament_prices",
   "version": "${version}",
   "name": "Firmament Prices",
-  "description": "Standalone Lowest BIN and Bazaar price tooltips for Hypixel SkyBlock. Forked from Firmament.",
+  "description": "Standalone Firmament Lowest BIN and Bazaar price tooltips for Hypixel SkyBlock.",
   "authors": [
+    "Firmament",
     "RaidBTW"
   ],
   "contact": {
@@ -28,5 +29,8 @@
     "fabric-api": ">=0.161.0"
   },
   "accessWidener": "firmament_prices.accesswidener",
-  "icon": "assets/firmament_prices/icon.png"
+  "icon": "assets/firmament_prices/icon.png",
+  "mixins": [
+    "firmament_prices.modmenu.mixins.json"
+  ]
 }

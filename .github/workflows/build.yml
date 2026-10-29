@@ -23,7 +23,9 @@ jobs:
               mod = json.loads(z.read('fabric.mod.json'))
               assert mod['id'] == 'firmament_prices'
               assert mod['depends']['minecraft'] == '26.2'
-              assert not any('features/' in name or 'mixins/' in name for name in z.namelist())
+              assert not any('features/' in name for name in z.namelist())
+              assert mod['mixins'] == ['firmament_prices.modmenu.mixins.json']
+              assert 'moe/nea/firmament/prices/compat/ModMenuAuthorSummaryMixin.class' in z.namelist()
               assert 'moe/nea/firmament/prices/FirmamentPrices.class' in z.namelist()
               assert 'moe/nea/firmament/prices/internal/moulconfig/gui/MoulConfigEditor.class' in z.namelist()
               assert any(n.startswith('META-INF/jars/fabric-language-kotlin') for n in z.namelist())
