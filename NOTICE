@@ -4,7 +4,8 @@ Original source commit: 4d1ed0013927328d91892252b596c0f66ceb5d10
 Copyright Firmament contributors, including Linnea Gräf <nea@nea.moe>.
 PriceData.kt, HypixelStaticData.kt, SkyblockId.kt, FirmFormatters.kt,
 ItemNameLookup.kt and EnchantedBookCache.kt were adapted into this standalone mod.
-Licensed under GPL-3.0-or-later. See LICENSES/GPL-3.0-or-later.txt.
+Licensed under GPL-3.0-or-later. See GPL-3.0-or-later.txt in the jar,
+or LICENSES/GPL-3.0-or-later.txt in the source repository.
 Item metadata comes from NotEnoughUpdates/NotEnoughUpdates-REPO; it is downloaded
 at runtime and is not redistributed inside this jar.
 

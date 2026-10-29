@@ -44,6 +44,7 @@ shadowJar {
     relocate 'io.github.notenoughupdates.moulconfig', 'moe.nea.firmament.prices.internal.moulconfig'
     mergeServiceFiles()
     from('LICENSES/GPL-3.0-or-later.txt') { rename { 'LICENSE' } }
+    from('LICENSES/GPL-3.0-or-later.txt')
     from('LICENSES/LGPL-3.0-or-later.txt')
     from('NOTICE')
     // The regular jar's include processor adds this descriptor; Shadow starts from raw resources.
