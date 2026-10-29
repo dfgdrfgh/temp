@@ -1,0 +1,24 @@
+plugins {
+    id 'net.fabricmc.fabric-loom' version '1.17.1'
+    id 'maven-publish'
+}
+version = '1.0.0+26.2'
+group = 'moe.nea.firmament.prices'
+base { archivesName = 'FirmamentPrices' }
+repositories { mavenCentral() }
+dependencies {
+    minecraft 'com.mojang:minecraft:26.2'
+    implementation 'net.fabricmc:fabric-loader:0.19.3'
+    implementation 'net.fabricmc.fabric-api:fabric-api:0.161.0+26.2'
+    testImplementation platform('org.junit:junit-bom:5.13.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+java { toolchain.languageVersion = JavaLanguageVersion.of(25); withSourcesJar() }
+tasks.withType(JavaCompile).configureEach { options.release = 25 }
+processResources {
+    inputs.property 'version', project.version
+    filesMatching('fabric.mod.json') { expand version: project.version }
+}
+test { useJUnitPlatform() }
+jar { from('LICENSES/GPL-3.0-or-later.txt') { rename { 'LICENSE' } }; from('NOTICE') }

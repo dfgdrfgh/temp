@@ -1,71 +1,13 @@
 {
-    "schemaVersion": 1,
-    "id": "firmament",
-    "version": "${version}",
-    "name": "Firmament",
-    "description": "Firmament powered by NEU",
-    "authors": [
-        {
-            "name": "Linnea Gräf",
-            "contact": {
-                "email": "nea@nea.moe"
-            }
-        }
-    ],
-    "contact": {
-        "discord": "https://discord.gg/64pFP94AWA",
-        "sources": "https://github.com/nea89o/Firmament",
-		"modrinth": "https://modrinth.com/mod/firmament"
-    },
-    "license": "GPL 3.0 or Later",
-    "accessWidener": "firmament.accesswidener",
-    "icon": "assets/firmament/logo.png",
-    "environment": "client",
-    "entrypoints": {
-        "main": [
-            "moe.nea.firmament.Firmament::onInitialize"
-        ],
-        "mm_shedaniel:early_risers": [
-            "moe.nea.firmament.init.EarlyRiser"
-        ],
-        "client": [
-            "moe.nea.firmament.Firmament::onClientInitialize",
-			"moe.nea.jarvis.fabric.JarvisMain"
-        ],
-        "rei_client": [
-            "moe.nea.firmament.compat.rei.FirmamentReiPlugin"
-        ],
-		"rei_common": [
-			"moe.nea.firmament.compat.rei.FirmamentReiCommonPlugin"
-		],
-        "modmenu": [
-            "moe.nea.firmament.compat.modmenu.FirmamentModMenuPlugin"
-        ],
-		"jade": [
-			"moe.nea.firmament.compat.jade.FirmamentJadePlugin"
-		],
-        "jarvis": [
-            "moe.nea.firmament.jarvis.JarvisIntegration"
-        ]
-    },
-    "mixins": [
-        "firmament.mixins.json"
-    ],
-    "depends": {
-        "fabric-api": ">=${fabric_api_version}",
-        "fabric-language-kotlin": ">=${fabric_kotlin_version}",
-        "minecraft": ">=${minecraft_version}"
-    },
-    "custom": {
-        "modmenu": {
-            "links": {
-                "modmenu.discord": "https://discord.gg/64pFP94AWA"
-            }
-        },
-        "mc-publish": {
-            "dependencies": [
-                "roughlyenoughitems(recommended){modrinth:rei}"
-            ]
-        }
-    }
+  "schemaVersion": 1,
+  "id": "firmament_prices",
+  "version": "${version}",
+  "name": "Firmament Prices",
+  "description": "Standalone Firmament Lowest BIN and Bazaar price tooltips for Hypixel SkyBlock.",
+  "authors": ["Firmament contributors", "dfgdrfgh"],
+  "contact": { "sources": "https://github.com/dfgdrfgh/temp", "issues": "https://github.com/dfgdrfgh/temp/pulls" },
+  "license": "GPL-3.0-or-later",
+  "environment": "client",
+  "entrypoints": { "client": ["moe.nea.firmament.prices.FirmamentPrices"] },
+  "depends": { "fabricloader": ">=0.19.3", "minecraft": "26.2", "java": ">=25", "fabric-api": ">=0.161.0" }
 }
