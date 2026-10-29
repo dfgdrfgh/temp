@@ -2,9 +2,9 @@
 
 Standalone extraction of Firmament's Lowest BIN and Bazaar price tooltips. Install **Fabric Loader 0.19.3+**, **Fabric API 0.161.0+26.2** and `FirmamentPrices-1.1.0+26.2.jar` on Minecraft **26.2** with Java **25+**. The Firmament configuration editor and its Kotlin runtime are bundled; the full Firmament mod is not required.
 
-Hover a SkyBlock item to see prices. Bazaar items show buy/sell order prices by default; auction items show Lowest BIN and the three-day average. Hold **Left Shift** to show prices for the whole stack, including quantities shown in sack/order lore. The two keys can be rebound under Options → Controls → Miscellaneous; the optional hold-to-show key is unbound by default.
+Hover a SkyBlock item to see prices. Bazaar items show buy/sell order prices by default; auction items show Lowest BIN and the three-day average. Hold **Left Shift** to show prices for the whole stack, including quantities shown in sack/order lore. The two keys can be rebound under Options → Controls → Firmament Prices; the optional hold-to-show key is unbound by default.
 
-Open the Firmament configuration menu with **`/firmamentprices`**, the config button in Mod Menu (if installed), or a key assigned under Controls → Miscellaneous → Open Firmament Prices settings.
+Open the Firmament configuration menu with **`/firmamentprices`**, the config button in Mod Menu (if installed), or a key assigned under Controls → Firmament Prices → Open Firmament Prices settings.
 
 The menu contains only price features: independent toggles for Lowest BIN, average BIN, Bazaar buy/sell lines, stack prices and the key hint, alongside the existing master switch, order/instant mode and average window.
 

@@ -22,6 +22,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.lwjgl.glfw.GLFW;
@@ -52,12 +53,13 @@ public final class FirmamentPrices implements ClientModInitializer {
         settings = PriceSettings.load(settingsPath);
         prices = new PriceRepository(loader.getGameDir().resolve("firmament-prices/metadata.json"));
         prices.configure(settings.apis.snapshot());
-        openConfig=KeyMappingHelper.registerKeyMapping(new KeyMapping("key.firmament_prices.config",InputConstants.Type.KEYSYM,GLFW.GLFW_KEY_UNKNOWN,KeyMapping.Category.MISC));
+        var keyCategory=KeyMapping.Category.register(Identifier.fromNamespaceAndPath("firmament_prices","main"));
+        openConfig=KeyMappingHelper.registerKeyMapping(new KeyMapping("key.firmament_prices.config",InputConstants.Type.KEYSYM,GLFW.GLFW_KEY_UNKNOWN,keyCategory));
         ClientTickEvents.END_CLIENT_TICK.register(client->{
             if(pendingConfig||openConfig.consumeClick()){pendingConfig=false;client.gui.setScreen(configScreen(client.gui.screen()));}
         });
-        showPrices = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.firmament_prices.show", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, KeyMapping.Category.MISC));
-        stackPrices = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.firmament_prices.stack", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_SHIFT, KeyMapping.Category.MISC));
+        showPrices = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.firmament_prices.show", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, keyCategory));
+        stackPrices = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.firmament_prices.stack", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_SHIFT, keyCategory));
         ItemTooltipCallback.EVENT.register((stack, context, flags, lines) -> tooltip(stack, lines));
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, context) -> {
             var root = literal("firmamentprices").executes(command -> {
