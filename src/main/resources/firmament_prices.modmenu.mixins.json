@@ -1,0 +1,7 @@
+{
+  "required": false,
+  "package": "moe.nea.firmament.prices.compat",
+  "compatibilityLevel": "JAVA_25",
+  "client": ["ModMenuAuthorSummaryMixin"],
+  "injectors": {"defaultRequire": 0}
+}

@@ -1,0 +1,15 @@
+Firmament Prices extracts and adapts Firmament's price tooltip functionality.
+Original project: https://github.com/FirmamentMC/Firmament
+Original source commit: 4d1ed0013927328d91892252b596c0f66ceb5d10
+Copyright Firmament contributors, including Linnea Gräf <nea@nea.moe>.
+PriceData.kt, HypixelStaticData.kt, SkyblockId.kt, FirmFormatters.kt,
+ItemNameLookup.kt and EnchantedBookCache.kt were adapted into this standalone mod.
+Licensed under GPL-3.0-or-later. See GPL-3.0-or-later.txt in the jar,
+or LICENSES/GPL-3.0-or-later.txt in the source repository.
+Item metadata comes from NotEnoughUpdates/NotEnoughUpdates-REPO; it is downloaded
+at runtime and is not redistributed inside this jar.
+
+The configuration editor includes a relocated copy of MoulConfig 4.8.0,
+Copyright NotEnoughUpdates contributors, LGPL-3.0-or-later.
+Source: https://github.com/NotEnoughUpdates/MoulConfig
+The unmodified Fabric Language Kotlin runtime is included as a nested library.
